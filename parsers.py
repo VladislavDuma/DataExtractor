@@ -2,6 +2,8 @@ import json
 import os.path
 import pickle
 import time
+from datetime import datetime
+
 import pandas as pd
 
 import nltk
@@ -373,7 +375,12 @@ class Preprocessor(object):
             "words": list(tokens.keys())
         }
 
-        path = f'{self.target}/word_list_ru_050922.json'
+        now = datetime.now()
+        year = int(now.strftime('%Y')) + 1
+        month = int(now.strftime('%m'))
+        day = int(now.strftime('%d'))
+
+        path = f'{self.target}/word_list_ru_{day}{month}{year}.json'
 
         with open(path, 'w', encoding='utf-8') as output_file:
             json.dump(word_list, output_file)

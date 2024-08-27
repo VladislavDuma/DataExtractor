@@ -27,9 +27,9 @@ class Scraper:
             except yaml.YAMLError as exc:
                 print(exc)
         self.scraper_config = scraper_config
-        self.base_path = f'./data/{scraper_config["config_folder"]}'
-        self.path_to_site_configs = f'./{scraper_config["root_folder"]}/{scraper_config["config_folder"]}'
-        self.site_list = scraper_config['site_list']
+        self.base_path = f'./data/{scraper_config["site_config_folder"]}'
+        self.path_to_site_configs = f'./{scraper_config["root_folder"]}/{scraper_config["site_config_folder"]}'
+        self.site_list = scraper_config['sites']
 
     # session = aiohttp.ClientSession()
     # session = aiohttp.ClientSession(trust_env=True)
@@ -50,7 +50,7 @@ class Scraper:
         """
         if url is None:
             url = site_config['url']
-        base_folder = self.scraper_config['config_folder']
+        base_folder = self.scraper_config['site_config_folder']
         headers = {'User-Agent': self.scraper_config['user-agent']}
 
         session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False))
@@ -281,10 +281,12 @@ class Scraper:
 
 
 if __name__ == "__main__":
-    scrap = Scraper('./configs/scraper_config_base.yaml')
+    path_to_config = './configs/scraper_config_base.yaml'
+    scrap = Scraper(config=path_to_config)
+
     # Задаём время окончания обновлений
     now = datetime.now()
-    year = int(now.strftime('%Y'))
+    year = int(now.strftime('%Y')) + 1
     month = int(now.strftime('%m'))
     day = int(now.strftime('%d'))
     hour = 17
